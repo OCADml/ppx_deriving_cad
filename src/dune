@@ -1,0 +1,7 @@
+(library
+ (name ppx_deriving_cad)
+ (public_name ppx_deriving_cad)
+ (kind ppx_deriver)
+ (libraries ppxlib)
+ (preprocess
+  (pps ppxlib.metaquot)))

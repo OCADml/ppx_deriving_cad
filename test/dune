@@ -1,0 +1,6 @@
+(library
+ (name ppx_deriving_cad_test)
+ (inline_tests)
+ (libraries base OCADml OSCADml)
+ (preprocess
+  (pps ppx_inline_test ppx_deriving_cad)))
