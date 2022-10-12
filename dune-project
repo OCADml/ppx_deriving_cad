@@ -27,9 +27,13 @@
    (and
     (>= 0.14.1)
     :with-test))
-  (scad_ml
+  (OCADml
    (and
-    (>= 1.0.0)
+    (<= 0.1.0)
+    :with-test))
+  (OSCADml
+   (and
+    (<= 0.1.0)
     :with-test))
   (ppxlib
    (>= 0.22.2))

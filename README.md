@@ -6,6 +6,8 @@ the types of the [OCADml library](https://github.com/OCADml/OCADml)
 (*e.g.* `V3.t` and `V2.t`), as well as CAD specific types such as `Scad.t` of
 [OSCADml](https://github.com/OCADml/OSCADml).
 
+Alteratively to the below, odoc generated documentation is also available [online](https://ocadml.github.io/ppx_deriving_cad/ppx_deriving_cad/Ppx_deriving_cad/index.html).
+
 **For example:**
 ```ocaml
 open OCADml
