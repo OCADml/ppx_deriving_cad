@@ -22,7 +22,7 @@
   "[@@deriving cad] generates functions for the\nspatial transformation of user defined abstract and record types containing\ntypes for which said transformation functions are defined, in particular, the types of OCADml (and CAD backend specific implementations).")
  (depends
   (ocaml
-   (>= 4.08.0))
+   (>= 4.13.0))
   (base
    (and
     (>= 0.14.1)
