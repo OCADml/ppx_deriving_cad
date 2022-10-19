@@ -4,7 +4,27 @@
     abstract and record types containing types for which said transformation functions are
     defined, in particular, the types of the {{:https://github.com/OCADml/OCADml} OCADml
     library} ({i e.g.} [V3.t] and [V2.t]), as well as CAD specific types such as [Scad.t]
-    of {{:https://github.com/OCADml/OSCADml} OSCADml}.
+    of {{:https://github.com/OCADml/OSCADml} OSCADml}. *)
+
+(** [\[@@deriving cad\]]
+
+    Derives [translate], [scale], [rotate], [axis_rotate], [quaternion], [affine], and
+    [mirror] for the tagged type. *)
+
+val cad : Ppxlib.Deriving.t
+
+(** [\[@@deriving cad_jane\]]
+
+    Same as [\[@@deriving cad\]], but defaults to expecting keyword [~f] parameters for
+    {{!mappable_abstract} mappable} types other than [list], [option], [result], and
+    {b tuples}. This can be overridden with the {{!cadmap} [\[@cad.map\]]} attribute. *)
+
+val cad_jane : Ppxlib.Deriving.t
+
+(** {1 Usage}
+
+    To generate the suite of basic transformation functions for your type, simply attach
+    [\[@@deriving cad\]] to the end.
 
     {b For example:}
 
@@ -80,7 +100,9 @@
       end
     ]}
 
-    {1:mappable Basic mappable types and tuples}
+    {2:mappable Mappable types}
+
+    {3:mappable_basic Basic}
 
     The [list], [option], and [result] types, as well as {b tuples}, are automatically
     mapped over, without any additional annotation or functions provided. Note the set of
@@ -106,7 +128,7 @@
       end
     ]}
 
-    {1 Other mappable types}
+    {3:mappable_abstract Abstract}
 
     By default, [\[@@deriving cad\]] will attempt to map over constructors other than the
     above basic types by using applying the [map] function of the relevant module, or for
@@ -132,7 +154,7 @@
     instead [V3.t int_map], the function [int_map_map] will be expected in the scope of
     the derived type.
 
-    {1 Intf generation and dimensional polymorphism}
+    {2 Intf generation and dimensional polymorphism}
 
     Annotating types in module sigs and [.mli] files will generate the relevant type
     signatures.
@@ -158,11 +180,11 @@
     {b 2d} transformations will be available (translation, rotation, scaling, and
     mirroring), as in the {{!mappable} mappable type example}.
 
-    {1 Attributes}
+    {2 Attributes}
 
-    {2 \[\@cad.unit\]}
+    {3 \[\@cad.unit\]}
 
-    This annotation should be applied to abstract types and fields which represent unit
+    This annotation should be applied to types and record fields which represent unit
     vector. Types/fields marked with this will not be subject to transformations that
     would cause them to lose thier identity as such, or rotate about anything other than
     the world origin. Thus:
@@ -190,7 +212,7 @@
         V3.equal plane.normal trans.normal
     ]}
 
-    {2 \[\@cad.ignore\]}
+    {3 \[\@cad.ignore\]}
 
     This annotation marks a field (in a record, not applicable to abstract types) to be
     ignored by all generated transformations. This is useful for ignoring whatever
@@ -206,7 +228,7 @@
       [@@deriving cad]
     ]}
 
-    {2 \[\@cad.map\] and \[\@cad.mapf\]}
+    {3:cadmap \[\@cad.map\] and \[\@cad.mapf\]}
 
     This annotation marks a type/field for which the transformable type is contained
     within a mappable type (aka functor), for which [map] is defined, and whose parameter
@@ -242,7 +264,7 @@
       end
     ]}
 
-    {2 \[\@cad.d2\] and \[\@cad.d3\]}
+    {3 \[\@cad.d2\] and \[\@cad.d3\]}
 
     When the dimensionality of a type is ambiguous (e.g. containing no fields with
     concretely dimensional types such as [Scad.d3], or [V2.t]), these annotations should
@@ -271,18 +293,3 @@
     Here, there are no [OCADml] (or related) types present in [a' t] that can clue
     [\[@@deriving cad\]] into whether it is {b 2d} or {b 3d}, so we tag on an attribute to
     clear it up. *)
-
-(** \[\@\@deriving cad\]
-
-    Derives [translate], [scale], [rotate], [axis_rotate], [quaternion], [affine], and
-    [mirror] for the tagged abstract or record type. *)
-
-val cad : Ppxlib.Deriving.t
-
-(** [\[@@deriving cad_jane\]]
-
-    Same as [\[@@deriving cad\]], but defaults to expecting keyword [~f] parameters for
-    mappable types other than [list], [option], [result], and {b tuples}. This can be
-    overridden with the [\[@cad.map\]] attribute. *)
-
-val cad_jane : Ppxlib.Deriving.t
