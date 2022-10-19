@@ -1,7 +1,7 @@
 {0 \[\@\@deriving cad\]}
 
    A PPX deriver that generates functions for the spatial transformation of user defined
-   abstract and record types containing types for which said transformation functions are
+   abstract and record types composed of types for which said transformation functions are
    defined, in particular, the types of the {{:https://github.com/OCADml/OCADml} OCADml
    library} ({i e.g.} [V3.t] and [V2.t]), as well as CAD specific types such as [Scad.t]
    of {{:https://github.com/OCADml/OSCADml} OSCADml}.
