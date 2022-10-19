@@ -15,8 +15,8 @@ depends: [
   "dune" {>= "3.2"}
   "ocaml" {>= "4.13.0"}
   "base" {>= "0.14.1" & with-test}
-  "OCADml" {<= "0.1.0" & with-test}
-  "OSCADml" {<= "0.1.0" & with-test}
+  "OCADml" {>= "0.1.0" & with-test}
+  "OSCADml" {>= "0.1.0" & with-test}
   "ppxlib" {>= "0.22.2"}
   "ppx_inline_test" {with-test}
   "odoc" {with-doc}

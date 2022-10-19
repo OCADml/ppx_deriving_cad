@@ -29,11 +29,11 @@
     :with-test))
   (OCADml
    (and
-    (<= 0.1.0)
+    (>= 0.1.0)
     :with-test))
   (OSCADml
    (and
-    (<= 0.1.0)
+    (>= 0.1.0)
     :with-test))
   (ppxlib
    (>= 0.22.2))
