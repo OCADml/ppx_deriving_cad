@@ -1,3 +1,3 @@
-## v1.0.0
+## v0.1.0
 
-- Initial opam release of ppx_deriving_scad
+- Initial opam release of `ppx_deriving_cad`
