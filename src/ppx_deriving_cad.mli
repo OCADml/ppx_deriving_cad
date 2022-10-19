@@ -10,7 +10,6 @@
 
     Derives [translate], [scale], [rotate], [axis_rotate], [quaternion], [affine], and
     [mirror] for the tagged type. *)
-
 val cad : Ppxlib.Deriving.t
 
 (** [\[@@deriving cad_jane\]]
@@ -18,13 +17,12 @@ val cad : Ppxlib.Deriving.t
     Same as [\[@@deriving cad\]], but defaults to expecting keyword [~f] parameters for
     {{!mappable_abstract} mappable} types other than [list], [option], [result], and
     {b tuples}. This can be overridden with the {{!cadmap} [\[@cad.map\]]} attribute. *)
-
 val cad_jane : Ppxlib.Deriving.t
 
 (** {1 Usage}
 
     To generate the suite of basic transformation functions for your type, simply attach
-    [\[@@deriving cad\]] to the end.
+    [\[@@deriving cad\]] (or [\[@@deriving cad_jane\]]) to the end.
 
     {b For example:}
 
