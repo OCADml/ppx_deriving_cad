@@ -58,7 +58,7 @@
    If the name of the type being derived is [t], then the functions generated (and those
    required to be present for the types inside of a type/record being derived) will be
    given unqualified names. For example, applying [\[@@deriving cad\]] to a lone record
-   type [t] would give a module that adhered to the following signature.
+   type [t] would give a module that adheres to the following signature.
 
    {[
      open OCADml
@@ -100,7 +100,7 @@
    {3:mappable_basic Basic}
 
    The [list], [option], and [result] types, as well as {b tuples}, are automatically
-   mapped over, without any additional annotation or functions provided. Note the set of
+   mapped over, without any additional annotation or functions required. Note the set of
    functions generated here is restricted to those that are strictly relevant to {b 2d}
    shapes/vectors compared to the first examples that contained {b 3d} types.
 
@@ -181,7 +181,7 @@
 
    This annotation should be applied to types and record fields which represent unit
    vector. Types/fields marked with this will not be subject to transformations that
-   would cause them to lose thier identity as such, or rotate about anything other than
+   would cause them to lose their identity as such, or rotate about anything other than
    the world origin. Thus:
 
    - translate and scale will not be applied (identity function instead)
@@ -285,6 +285,6 @@
      end
    ]}
 
-   Here, there are no [OCADml] (or related) types present in [a' t] that can clue
+   Here, there are no [OCADml] (or related) types present in ['a t] that can clue
    [\[@@deriving cad\]] into whether it is {b 2d} or {b 3d}, so we tag on an attribute to
    clear it up.
