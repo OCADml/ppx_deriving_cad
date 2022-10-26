@@ -21,7 +21,7 @@ val xscale_mark : float -&gt; mark -&gt; mark
 val yscale_mark : float -&gt; mark -&gt; mark
 val zscale_mark : float -&gt; mark -&gt; mark
 val mirror_mark : V3.t -&gt; mark -&gt; mark
-val affine_mark : Affine3.t -&gt; mark -&gt; mark</code></pre><p>If the name of the type being derived is <code>t</code>, then the functions generated (and those required to be present for the types inside of a type/record being derived) will be given unqualified names. For example, applying <code>[@@deriving cad]</code> to a lone record type <code>t</code> would give a module that adhered to the following signature.</p><pre><code>open OCADml
+val affine_mark : Affine3.t -&gt; mark -&gt; mark</code></pre><p>If the name of the type being derived is <code>t</code>, then the functions generated (and those required to be present for the types inside of a type/record being derived) will be given unqualified names. For example, applying <code>[@@deriving cad]</code> to a lone record type <code>t</code> would give a module that adheres to the following signature.</p><pre><code>open OCADml
 open OSCADml
 
 module Mark : sig
@@ -52,7 +52,7 @@ end = struct
     ; centre : V3.t
     }
   [@@deriving cad]
-end</code></pre><h3 id="mappable"><a href="#mappable" class="anchor"></a>Mappable types</h3><h4 id="mappable_basic"><a href="#mappable_basic" class="anchor"></a>Basic</h4><p>The <code>list</code>, <code>option</code>, and <code>result</code> types, as well as <b>tuples</b>, are automatically mapped over, without any additional annotation or functions provided. Note the set of functions generated here is restricted to those that are strictly relevant to <b>2d</b> shapes/vectors compared to the first examples that contained <b>3d</b> types.</p><pre><code>module Tris : sig
+end</code></pre><h3 id="mappable"><a href="#mappable" class="anchor"></a>Mappable types</h3><h4 id="mappable_basic"><a href="#mappable_basic" class="anchor"></a>Basic</h4><p>The <code>list</code>, <code>option</code>, and <code>result</code> types, as well as <b>tuples</b>, are automatically mapped over, without any additional annotation or functions required. Note the set of functions generated here is restricted to those that are strictly relevant to <b>2d</b> shapes/vectors compared to the first examples that contained <b>3d</b> types.</p><pre><code>module Tris : sig
   type t = (V2.t * V2.t * V2.t) list
 
   val translate : V2.t -&gt; t -&gt; t
@@ -81,7 +81,7 @@ end = struct
     ; b : ('s, 'r, 'a) Scad.t
     }
   [@@deriving cad]
-end</code></pre><p>Note that this is also an example of polymorphism over the dimensionality of the <code>OSCADml.Scad.t</code> type. Of course, when the type could be either <b>2d</b> or <b>3d</b>, only <b>2d</b> transformations will be available (translation, rotation, scaling, and mirroring), as in the <a href="#mappable">mappable type example</a>.</p><h3 id="attributes"><a href="#attributes" class="anchor"></a>Attributes</h3><h4 id="[@cad.unit]"><a href="#[@cad.unit]" class="anchor"></a>[@cad.unit]</h4><p>This annotation should be applied to types and record fields which represent unit vector. Types/fields marked with this will not be subject to transformations that would cause them to lose thier identity as such, or rotate about anything other than the world origin. Thus:</p><ul><li>translate and scale will not be applied (identity function instead)</li><li>the <code>?about</code> parameter will not be passed to the rotation functions (<code>rotate</code>, <code>axis_rotate</code>, and <code>quaternion</code>) applied to the type marked by <code>@cad.unit</code>.</li></ul><p><b>For example:</b></p><pre><code>type plane =
+end</code></pre><p>Note that this is also an example of polymorphism over the dimensionality of the <code>OSCADml.Scad.t</code> type. Of course, when the type could be either <b>2d</b> or <b>3d</b>, only <b>2d</b> transformations will be available (translation, rotation, scaling, and mirroring), as in the <a href="#mappable">mappable type example</a>.</p><h3 id="attributes"><a href="#attributes" class="anchor"></a>Attributes</h3><h4 id="[@cad.unit]"><a href="#[@cad.unit]" class="anchor"></a>[@cad.unit]</h4><p>This annotation should be applied to types and record fields which represent unit vector. Types/fields marked with this will not be subject to transformations that would cause them to lose their identity as such, or rotate about anything other than the world origin. Thus:</p><ul><li>translate and scale will not be applied (identity function instead)</li><li>the <code>?about</code> parameter will not be passed to the rotation functions (<code>rotate</code>, <code>axis_rotate</code>, and <code>quaternion</code>) applied to the type marked by <code>@cad.unit</code>.</li></ul><p><b>For example:</b></p><pre><code>type plane =
   { scad : Scad.d3
   ; normal : V3.t [@cad.unit]
   }
@@ -125,4 +125,4 @@ end = struct
   [@@deriving cad]
 
   type 'a t = { p : 'a p [@cad.d2] } [@@deriving cad]
-end</code></pre><p>Here, there are no <code>OCADml</code> (or related) types present in <code>a' t</code> that can clue <code>[@@deriving cad]</code> into whether it is <b>2d</b> or <b>3d</b>, so we tag on an attribute to clear it up.</p></div></body></html>
+end</code></pre><p>Here, there are no <code>OCADml</code> (or related) types present in <code>'a t</code> that can clue <code>[@@deriving cad]</code> into whether it is <b>2d</b> or <b>3d</b>, so we tag on an attribute to clear it up.</p></div></body></html>
