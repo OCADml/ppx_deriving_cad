@@ -105,14 +105,16 @@ let transform_expr ~loc ~jane ~transform ~kind (ct : core_type) =
         aux attrs (Util.list_map_expr :: funcs) typ
       | [%type: ([%t? typ], [%t? _]) result] | [%type: ([%t? typ], [%t? _]) Result.t] ->
         aux attrs (Util.result_map_expr :: funcs) typ
-      | [%type: ([%t? _], [%t? _], [%t? _]) Scad.t]
+      | [%type: ([%t? _], [%t? _], [%t? _], [%t? _]) Scad.t]
       | [%type: Scad.d2]
       | [%type: Scad.d3]
-      | [%type: ([%t? _], [%t? _], [%t? _]) OSCADml.Scad.t]
+      | [%type: ([%t? _], [%t? _], [%t? _], [%t? _]) OSCADml.Scad.t]
       | [%type: OSCADml.Scad.d2]
       | [%type: OSCADml.Scad.d3] -> inner_expr attrs (fix_id "OSCADml" "Scad"), funcs
-      | [%type: v2] | [%type: OCADml.v2] -> inner_expr attrs (fix_id "OCADml" "V2"), funcs
-      | [%type: v3] | [%type: OCADml.v3] -> inner_expr attrs (fix_id "OCADml" "V3"), funcs
+      | [%type: v2] | [%type: OCADml.v2] | [%type: GG.v2] | [%type: GG.V2.t] ->
+        inner_expr attrs (fix_id "OCADml" "V2"), funcs
+      | [%type: v3] | [%type: OCADml.v3] | [%type: GG.v3] | [%type: GG.V3.t] ->
+        inner_expr attrs (fix_id "OCADml" "V3"), funcs
       | { ptyp_desc = Ptyp_tuple cts; _ } ->
         let tup_expr =
           let argn n = Printf.sprintf "arg%i" n in
@@ -244,7 +246,7 @@ let transformer_intf ~ctxt (_rec_flag, type_declarations) =
         , cad_type_arrow ~lbl:(Optional "about") ~loc "V3"
         , cad_type_arrow ~loc "Affine3"
         , transforms_3d )
-      | Poly (space, rot, affine) ->
+      | Poly (_, space, rot, affine) ->
         ( var_type_arrow ~loc space
         , var_type_arrow ~loc rot
         , var_type_arrow ~lbl:(Optional "about") ~loc space

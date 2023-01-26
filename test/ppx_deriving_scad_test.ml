@@ -33,15 +33,15 @@ module type FunType = sig
 end
 
 module PolyScads : sig
-  type ('s, 'r, 'a) t =
-    { a : ('s, 'r, 'a) Scad.t
-    ; b : ('s, 'r, 'a) Scad.t
+  type ('d, 's, 'r, 'a) t =
+    { a : ('d, 's, 'r, 'a) Scad.t
+    ; b : ('d, 's, 'r, 'a) Scad.t
     }
   [@@deriving cad]
 end = struct
-  type ('s, 'r, 'a) t =
-    { a : ('s, 'r, 'a) Scad.t
-    ; b : ('s, 'r, 'a) Scad.t
+  type ('d, 's, 'r, 'a) t =
+    { a : ('d, 's, 'r, 'a) Scad.t
+    ; b : ('d, 's, 'r, 'a) Scad.t
     }
   [@@deriving cad]
 end
@@ -141,7 +141,7 @@ let%test "rotate_about_pair" =
   let a = { reg = v3 5. 5. 0.; unit = v3 0. 1. 0. }
   and r = v3 0. 0. (Float.pi /. 2.)
   and p = v3 0. 5. 0. in
-  let rot = zrot_vec_pair ~about:p r.z a in
+  let rot = zrot_vec_pair ~about:p (V3.z r) a in
   V3.equal rot.reg (V3.rotate ~about:p r a.reg) && V3.equal rot.unit (V3.rotate r a.unit)
 
 let%test "unit_prevents_translate" =

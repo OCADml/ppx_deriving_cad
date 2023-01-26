@@ -4,7 +4,7 @@ open! Ast_builder.Default
 type t =
   | D2
   | D3
-  | Poly of string * string * string
+  | Poly of string * string * string * string
 
 type error =
   | MixedDimensions
@@ -48,10 +48,10 @@ let rec check ~loc dim = function
   | [%type: OCADml.Poly2.t]
   | [%type: Bezier2.t]
   | [%type: OCADml.Bezier2.t]
-  | [%type: (V2.t, float, Affine2.t) Scad.t]
-  | [%type: (v2, float, Affine2.t) Scad.t]
-  | [%type: (OCADml.V2.t, float, OCADml.Affine2.t) OCADml.Scad.t]
-  | [%type: (OCADml.v2, float, OCADml.Affine2.t) OCADml.Scad.t]
+  | [%type: ([ `D2 ], V2.t, float, Affine2.t) Scad.t]
+  | [%type: ([ `D2 ], v2, float, Affine2.t) Scad.t]
+  | [%type: ([ `D2 ], OCADml.V2.t, float, OCADml.Affine2.t) OCADml.Scad.t]
+  | [%type: ([ `D2 ], OCADml.v2, float, OCADml.Affine2.t) OCADml.Scad.t]
   | [%type: Scad.d2]
   | [%type: OSCADml.Scad.d2] ->
     ( match dim with
@@ -70,10 +70,10 @@ let rec check ~loc dim = function
   | [%type: OCADml.Bezier3.t]
   | [%type: Mesh.t]
   | [%type: OCADml.Mesh.t]
-  | [%type: (V3.t, V3.t, Affine3.t) Scad.t]
-  | [%type: (v3, v3, Affine3.t) Scad.t]
-  | [%type: (OCADml.V3.t, OCADml.V3.t, OCADml.Affine3.t) OSCADml.Scad.t]
-  | [%type: (OCADml.v3, OCADml.v3, OCADml.Affine3.t) OSCADml.Scad.t]
+  | [%type: ([ `D3 ], V3.t, V3.t, Affine3.t) Scad.t]
+  | [%type: ([ `D3 ], v3, v3, Affine3.t) Scad.t]
+  | [%type: ([ `D3 ], OCADml.V3.t, OCADml.V3.t, OCADml.Affine3.t) OSCADml.Scad.t]
+  | [%type: ([ `D3 ], OCADml.v3, OCADml.v3, OCADml.Affine3.t) OSCADml.Scad.t]
   | [%type: Scad.d3]
   | [%type: OSCADml.Scad.d3] ->
     ( match dim with
@@ -81,20 +81,25 @@ let rec check ~loc dim = function
     | Some (Poly _) -> Error PolyCollapse
     | _ -> Ok (Some D3) )
   | [%type:
-      ( [%t? { ptyp_desc = Ptyp_var s; _ }]
+      ( [%t? { ptyp_desc = Ptyp_var d; _ }]
+      , [%t? { ptyp_desc = Ptyp_var s; _ }]
       , [%t? { ptyp_desc = Ptyp_var r; _ }]
       , [%t? { ptyp_desc = Ptyp_var a; _ }] )
       Scad.t]
   | [%type:
-      ( [%t? { ptyp_desc = Ptyp_var s; _ }]
+      ( [%t? { ptyp_desc = Ptyp_var d; _ }]
+      , [%t? { ptyp_desc = Ptyp_var s; _ }]
       , [%t? { ptyp_desc = Ptyp_var r; _ }]
       , [%t? { ptyp_desc = Ptyp_var a; _ }] )
       OSCADml.Scad.t] ->
     ( match dim with
     | Some (D2 | D3) -> Error PolyCollapse
-    | Some (Poly (s', r', a')) as d
-      when String.equal s s' && String.equal r r' && String.equal a a' -> Ok d
-    | None -> Ok (Some (Poly (s, r, a)))
+    | Some (Poly (d', s', r', a')) as dim
+      when String.equal d d'
+           && String.equal s s'
+           && String.equal r r'
+           && String.equal a a' -> Ok dim
+    | None -> Ok (Some (Poly (d, s, r, a)))
     | _ -> Error PolyMismatch )
   | { ptyp_desc = Ptyp_tuple (hd :: cts); _ } ->
     let f dim' ct =
