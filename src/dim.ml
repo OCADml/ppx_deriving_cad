@@ -75,7 +75,9 @@ let rec check ~loc dim = function
   | [%type: ([ `D3 ], OCADml.V3.t, OCADml.V3.t, OCADml.Affine3.t) OSCADml.Scad.t]
   | [%type: ([ `D3 ], OCADml.v3, OCADml.v3, OCADml.Affine3.t) OSCADml.Scad.t]
   | [%type: Scad.d3]
-  | [%type: OSCADml.Scad.d3] ->
+  | [%type: OSCADml.Scad.d3]
+  | [%type: Manifold.t]
+  | [%type: OManifold.Manifold.t] ->
     ( match dim with
     | Some D2 -> Error MixedDimensions
     | Some (Poly _) -> Error PolyCollapse
